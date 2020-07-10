@@ -2,8 +2,31 @@ transactionModel = require('../models/TransactionModel.js');
 logger = require('../config/logger.js');
 
 const create = async (req, res) => { 
-  const request = req.body['period'];
+  const request = req.body;
+  
+  try {
+    const newTransaction = await transactionModel.create(
+      { 	
+        description: request['description'],
+        value: request['value'],
+        category: request['category'],
+        year: request['year'],
+        month: request['month'],
+        day: request['day'],
+        yearMonth: request['yearMonth'],
+        yearMonthDay: request['yearMonthDay'],
+        type: request['type']
+      }
+    );
 
+    res.send(newTransaction);
+    logger.info(`POST / - ${JSON.stringify(request)}`);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Algum erro ocorreu ao salvar' });
+    logger.error(`POST / - ${JSON.stringify(error.message)}`);
+  }
 };
 
 const findOne = async (req, res) => { 
@@ -51,18 +74,61 @@ const findAll = async (req, res) => {
   }
 };
 
-const update = async (req, res) => { 
-  const request = req.body['period'];
+const update = async (req, res) => {
+  const values = req.body;
 
+  if (!values) {
+    return res.status(400).send({
+      message: 'Provide data to update',
+    });
+  }
+
+  const id = req.params.id;
+
+  try {
+    const updatedTransaction = await transactionModel.findByIdAndUpdate(
+      { _id: id },
+      { description: values['description'],
+        value: values['value'],
+        category: values['category'],
+        year: values['year'],
+        month: values['month'],
+        day: values['day'],
+        yearMonth: values['yearMonth'],
+        yearMonthDay: values['yearMonthDay'],
+        type: values['type']
+      });
+
+    res.send({ message: 'Transaction updated' });
+
+    logger.info(`PUT /transaction - ${id} - ${JSON.stringify(req.body)}`);
+  } catch (error) {
+    res.status(500).send({ message: 'Error updating transaction: ' + id });
+    logger.error(`PUT /transaction - ${JSON.stringify(error.message)}`);
+  }
 };
 
-const remove = async (req, res) => { 
-  const request = req.body['period'];
+const remove = async (req, res) => {
+  const id = req.params['id'];
 
+  try {
+    const deletedGrade = await transactionModel.findByIdAndDelete({ _id: id });
+
+    if(deletedGrade === null){
+      res
+        .status(500)
+        .send({ message: 'Transaction not deleted: ' + id });
+      logger.error(`DELETE /transaction - Transaction not deleted - id: ${id}`);
+    } else {
+      res.send({ message: 'Transaction deleted' });
+      logger.info(`DELETE /transaction - ${id}`);
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: 'Transaction not deleted: ' + id });
+    logger.error(`DELETE /transaction - ${JSON.stringify(error.message)}`);
+  }
 };
-const removeAll = async (req, res) => { 
-  const request = req.body['period'];
 
-};
-
-module.exports = { create, findAll, findOne, update, remove, removeAll };
+module.exports = { create, findAll, findOne, update, remove };
