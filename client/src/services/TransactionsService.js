@@ -1,34 +1,28 @@
 import http from '../http-common';
 
 const getAll = () => {
-  return http.get('/grade');
+  return http.get('/api/transaction');
 };
 
 const get = (id) => {
-  return http.get(`/grade/${id}`);
+  return http.get(`/api/transaction/${id}`);
 };
 
 const create = (data) => {
-  return http.post('/grade', data);
+  return http.post('/api/transaction', data);
 };
 
 const update = (id, data) => {
-  console.log(`>>> ${id} <<<<`);
-  console.log(`>>> ${data} <<<<`);
-  return http.put(`/grade/${id}`, data);
+  return http.put(`/api/transaction/${id}`, data);
 };
 
 const remove = (id) => {
-  return http.delete(`/grade/${id}`);
+  return http.delete(`/api/transaction/${id}`);
 };
 
-const removeAll = () => {
-  return http.delete(`/grade`);
-};
-
-const findByName = (name) => {
-  return http.get(`/grade?name=${name}`);
-};
+// const findByName = (name) => {
+//   return http.get(`/grade?name=${name}`);
+// };
 
 export default {
   getAll,
@@ -36,6 +30,4 @@ export default {
   create,
   update,
   remove,
-  removeAll,
-  findByName,
 };
