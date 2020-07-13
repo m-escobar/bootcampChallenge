@@ -1,7 +1,7 @@
 import http from '../http-common';
 
-const getAll = () => {
-  return http.get('/api/transaction');
+const getAll = (data) => {
+  return http.get(`api/transaction/all/${data}`);
 };
 
 const get = (id) => {

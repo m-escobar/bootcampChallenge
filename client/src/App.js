@@ -1,6 +1,5 @@
 import React from 'react';
-// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
 
 // import AddGrade from './components/AddGrade';
@@ -9,25 +8,20 @@ import TransactionList from './components/TransactionList';
 
 export default function App() {
   return (
-  <>
-  <h4>Desafio Final do Bootcamp Full Stack</h4>
-  <h3>Controle Financeiro Pessoal</h3>
-  </>
-  )
+    <Router>
+      <h3>Desafio Final do Bootcamp Full Stack</h3>
+      <h4>Controle Financeiro Pessoal</h4>
+
+      <Switch>
+        <Route exact path={['/', '/api/transaction']} component={TransactionList} />
+{/* //             <Route exact path="/add" component={AddTransaction} /> */}
+{/* //             <Route path="/grade/:id" component={Transaction} /> */}
+      </Switch>
+    </Router>
+  );
 }
 
 
-// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import './App.css';
-
-// import AddGrade from './components/AddGrade';
-// import Grade from './components/Grade';
-// import GradeList from './components/GradeList';
-
-// function App() {
-//   return (
-//     <Router>
 //       <div>
 //         <nav className="navbar navbar-expand navbar-dark bg-dark">
 //           <a href="/grade" className="navbar-brand">
@@ -47,13 +41,3 @@ export default function App() {
 //           </div>
 //         </nav>
 //         <div className="container mt-3">
-//           <Switch>
-//             <Route exact path={['/', '/grade']} component={GradeList} />
-//             <Route exact path="/add" component={AddGrade} />
-//             <Route path="/grade/:id" component={Grade} />
-//           </Switch>
-//         </div>
-//       </div>
-//     </Router>
-//   );
-// }

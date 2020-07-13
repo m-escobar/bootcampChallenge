@@ -52,7 +52,9 @@ const findOne = async (req, res) => {
 };
 
 const findAll = async (req, res) => { 
-  const request = req.body['period'];
+  const request = req.params['period'];
+  
+console.log(`request=====>> ${request['period']}`)
 
   if (!request) {
     return res.status(400).send({
@@ -65,12 +67,12 @@ const findAll = async (req, res) => {
     all_transactions;
 
     res.send(all_transactions);
-    logger.info('GET /transaction');
+    logger.info('GET /transaction/all/:period');
   } catch (error) {
     res
       .status(500)
       .send({ message: error.message || 'Error listing documents' });
-    logger.error(`GET /transaction - ${JSON.stringify(error.message)}`);
+    logger.error(`GET /transaction/all/:period - ${JSON.stringify(error.message)}`);
   }
 };
 

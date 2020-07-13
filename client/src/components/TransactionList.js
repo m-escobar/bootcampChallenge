@@ -2,23 +2,30 @@ import React, { useState, useEffect } from 'react';
 import TransactionDataService from '../services/TransactionsService';
 import { Link } from 'react-router-dom';
 
-const TransactionList = () => {
+const TransactionList = (props) => {
+  const initialTransactionState = {
+    period: '2020-07'
+  };
+  const period = '2020-07'
+
   const [transaction, setTransaction] = useState([]);
-  const [currentTransaction, setCurrentTransaction] = useState(null);
+  const [currentTransaction, setCurrentTransaction] = useState(initialTransactionState);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchCategory, setSearchCategory] = useState('');
 
   useEffect(() => {
-    retrieveTransaction();
-  }, []);
+    console.log(`PROPS -->> ${period}`);
+    retrieveTransaction(period);
+  }, [period]);
 
   const onChangeSearchCategory = (e) => {
     const searchCategory = e.target.value;
     setSearchCategory(searchCategory);
   };
 
-  const retrieveTransaction = () => {
-    TransactionDataService.getAll()
+  const retrieveTransaction = (period) => {
+    console.log(period)
+    TransactionDataService.getAll(period)
       .then((response) => {
         setTransaction(response.data);
         console.log(response.data);
@@ -26,12 +33,6 @@ const TransactionList = () => {
       .catch((e) => {
         console.log(e);
       });
-  };
-
-  const refreshList = () => {
-    retrieveTransaction();
-    setCurrentTransaction(null);
-    setCurrentIndex(-1);
   };
 
   const setActiveTransaction = (transaction, index) => {
@@ -57,7 +58,7 @@ const TransactionList = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search by name"
+            placeholder="Search by category"
             value={searchCategory}
             onChange={onChangeSearchCategory}
           />
@@ -73,7 +74,7 @@ const TransactionList = () => {
         </div>
       </div>
       <div className="col-md-6">
-        <h4>Grade List</h4>
+        <h4>Transations List</h4>
 
         <ul className="list-group">
           {transaction &&
@@ -92,33 +93,34 @@ const TransactionList = () => {
 
 
       </div>
+
       <div className="col-md-6">
         {currentTransaction ? (
           <div>
             <h4>Transaction</h4>
             <div>
               <label>
-                <strong>Name:</strong>
+                <strong>description:</strong>
               </label>{' '}
-              {currentTransaction.name}
+              {currentTransaction.description}
             </div>
             <div>
               <label>
-                <strong>Subject:</strong>
-              </label>{' '}
-              {currentTransaction.subject}
-            </div>
-            <div>
-              <label>
-                <strong>Type:</strong>
-              </label>{' '}
-              {currentTransaction.type}
-            </div>
-            <div>
-              <label>
-                <strong>Value:</strong>
+                <strong>value:</strong>
               </label>{' '}
               {currentTransaction.value}
+            </div>
+            <div>
+              <label>
+                <strong>category:</strong>
+              </label>{' '}
+              {currentTransaction.category}
+            </div>
+            <div>
+              <label>
+                <strong>day:</strong>
+              </label>{' '}
+              {currentTransaction.day}
             </div>
 
             <Link
