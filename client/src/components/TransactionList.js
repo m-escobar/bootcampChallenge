@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import TransactionDataService from '../services/TransactionsService';
 import { Link } from 'react-router-dom';
-import { Grid, Row, Col} from './Flexbox';
+import { Grid, Row, Col } from './Flexbox';
+// import './TransactionList.css'
 
 const TransactionList = (props) => {
-  const initialTransactionState = {
-    period: '2020-07'
-  };
+  // const initialTransactionState = {
+  //   period: '2020-07'
+  // };
   const period = '2020-07'
   console.log(`propos=> ${props['period']}`)
   const [transactions, setTransaction] = useState([]);
-  const [currentTransaction, setCurrentTransaction] = useState(initialTransactionState);
-  const [currentIndex, setCurrentIndex] = useState(-1);
+  // const [currentTransaction, setCurrentTransaction] = useState(initialTransactionState);
+  // const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchCategory, setSearchCategory] = useState('');
 
   useEffect(() => {
@@ -28,17 +29,17 @@ const TransactionList = (props) => {
     TransactionDataService.getAll(period)
       .then((response) => {
         setTransaction(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
   };
 
-  const setActiveTransaction = (transaction, index) => {
-    setCurrentTransaction(transaction);
-    setCurrentIndex(index);
-  };
+  // const setActiveTransaction = (transaction, index) => {
+  //   setCurrentTransaction(transaction);
+  //   setCurrentIndex(index);
+  // };
 
   const findByCategory = () => {
     TransactionDataService.findByCategory(searchCategory)
@@ -76,77 +77,36 @@ const TransactionList = (props) => {
       <div className="col-md-6">
         <h4>Operações Realizadas</h4>
         <Grid>
-          <ul className="list-group">
             {transactions &&
               transactions.map((transaction, index) => (
-                <Row>
-                  <Col size={1}>
-                    <li className={
-                      'list-group-item ' + (index === currentIndex ? 'active' : '')
-                    }
-                    onClick={() => setActiveTransaction(transaction, index)}
-                    key={index}
-                    >
+              <ul className="transaction"
+                key={index}>
+                <Row color={transaction.type === '-' ? 'lightpink' : 'rgb(191, 250, 191)'}>
+                  <Col size={1} align={'center'}>
                     <strong>{transaction.day}</strong>
-                    </li>
                   </Col>
-                  <Col size={5}>
-                    <strong>{transaction.description}</strong>
+                  <Col size={6}>
+                    <strong>{transaction.description}</strong><br />
                     Categoria: {transaction.category}
                   </Col>
-                  <Col size={1}>
+                  <Col size={4} align={'right'}>
                     R$ {transaction.value}
                   </Col>
-                  <Col size={1}>
-                    (E)   (D)
+                  <Col size={1} align={'right'}>
+                    <Link
+                      to={'/api/transaction/' + transaction._id}
+                      className="badge badge-warning"
+                      >
+                      (E)
+                    </Link>  
+                  </Col>
+                  <Col size={1} align={'center'}>
+                    (D)
                   </Col>
                 </Row>
+              </ul>
               ))}
-          </ul>
-        </Grid>
-      </div>
-      <div className="col-md-6">
-        {currentTransaction ? (
-          <div>
-            <h4>Grade</h4>
-            <div>
-              <label>
-                <strong>Description:</strong>
-              </label>{' '}
-              {currentTransaction.description}
-            </div>
-            <div>
-              <label>
-                <strong>Category:</strong>
-              </label>{' '}
-              {currentTransaction.category}
-            </div>
-            <div>
-              <label>
-                <strong>Value:</strong>
-              </label>{' '}
-              {currentTransaction.value}
-            </div>
-            <div>
-              <label>
-                <strong>Data:</strong>
-              </label>{' '}
-              {currentTransaction.yearMonthDay}
-            </div>
-
-            <Link
-              to={'/api/transaction/' + currentTransaction._id}
-              className="badge badge-warning"
-            >
-              Editar
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>Selecione uma operação...</p>
-          </div>
-        )}
+          </Grid>
       </div>
     </div>
   );
