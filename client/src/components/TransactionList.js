@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import TransactionDataService from '../services/TransactionsService';
 import { Link } from 'react-router-dom';
+import { Grid, Row, Col} from './Flexbox';
 
 const TransactionList = (props) => {
   const initialTransactionState = {
     period: '2020-07'
   };
   const period = '2020-07'
-
-  const [transaction, setTransaction] = useState([]);
+  console.log(`propos=> ${props['period']}`)
+  const [transactions, setTransaction] = useState([]);
   const [currentTransaction, setCurrentTransaction] = useState(initialTransactionState);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchCategory, setSearchCategory] = useState('');
@@ -24,7 +25,6 @@ const TransactionList = (props) => {
   };
 
   const retrieveTransaction = (period) => {
-    console.log(period)
     TransactionDataService.getAll(period)
       .then((response) => {
         setTransaction(response.data);
@@ -74,66 +74,77 @@ const TransactionList = (props) => {
         </div>
       </div>
       <div className="col-md-6">
-        <h4>Transations List</h4>
-
-        <ul className="list-group">
-          {transaction &&
-            transaction.map((transaction, index) => (
-              <li
-                className={
-                  'list-group-item ' + (index === currentIndex ? 'active' : '')
-                }
-                onClick={() => setActiveTransaction(transaction, index)}
-                key={index}
-              >
-                {transaction.name}
-              </li>
-            ))}
-        </ul>
-
-
+        <h4>Operações Realizadas</h4>
+        <Grid>
+          <ul className="list-group">
+            {transactions &&
+              transactions.map((transaction, index) => (
+                <Row>
+                  <Col size={1}>
+                    <li className={
+                      'list-group-item ' + (index === currentIndex ? 'active' : '')
+                    }
+                    onClick={() => setActiveTransaction(transaction, index)}
+                    key={index}
+                    >
+                    <strong>{transaction.day}</strong>
+                    </li>
+                  </Col>
+                  <Col size={5}>
+                    <strong>{transaction.description}</strong>
+                    Categoria: {transaction.category}
+                  </Col>
+                  <Col size={1}>
+                    R$ {transaction.value}
+                  </Col>
+                  <Col size={1}>
+                    (E)   (D)
+                  </Col>
+                </Row>
+              ))}
+          </ul>
+        </Grid>
       </div>
-
       <div className="col-md-6">
         {currentTransaction ? (
           <div>
-            <h4>Transaction</h4>
+            <h4>Grade</h4>
             <div>
               <label>
-                <strong>description:</strong>
+                <strong>Description:</strong>
               </label>{' '}
               {currentTransaction.description}
             </div>
             <div>
               <label>
-                <strong>value:</strong>
-              </label>{' '}
-              {currentTransaction.value}
-            </div>
-            <div>
-              <label>
-                <strong>category:</strong>
+                <strong>Category:</strong>
               </label>{' '}
               {currentTransaction.category}
             </div>
             <div>
               <label>
-                <strong>day:</strong>
+                <strong>Value:</strong>
               </label>{' '}
-              {currentTransaction.day}
+              {currentTransaction.value}
+            </div>
+            <div>
+              <label>
+                <strong>Data:</strong>
+              </label>{' '}
+              {currentTransaction.yearMonthDay}
             </div>
 
             <Link
               to={'/api/transaction/' + currentTransaction._id}
               className="badge badge-warning"
             >
-              Edit
+              Editar
             </Link>
           </div>
         ) : (
           <div>
             <br />
-            <p>Please select a Transaction.</p>
+            <p>Selecione uma operação...</p>
           </div>
         )}
       </div>

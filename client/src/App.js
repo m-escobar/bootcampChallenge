@@ -9,7 +9,7 @@ import TransactionList from './components/TransactionList';
 export default function App() {
   return (
     <Router>
-      <h3>Desafio Final do Bootcamp Full Stack</h3>
+      <h3><strong>Desafio Final do Bootcamp Full Stack</strong></h3>
       <h4>Controle Financeiro Pessoal</h4>
 
       <Switch>
