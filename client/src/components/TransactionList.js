@@ -97,11 +97,11 @@ const TransactionList = (props) => {
                       to={'/api/transaction/' + transaction._id}
                       className="badge badge-warning"
                       >
-                      (E)
+                      <i class="material-icons">edit</i>
                     </Link>  
                   </Col>
                   <Col size={1} align={'center'}>
-                    (D)
+                  <i class="material-icons">remove_circle</i>
                   </Col>
                 </Row>
               </ul>
