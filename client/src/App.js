@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 
 // import AddGrade from './components/AddGrade';
@@ -14,8 +14,8 @@ export default function App() {
 
       <Switch>
         <Route exact path={['/', '/api/transaction']} component={TransactionList} />
+        <Route path="/api/transaction/:id" component={Transaction} />
 {/* //             <Route exact path="/add" component={AddTransaction} /> */}
-{/* //             <Route path="/grade/:id" component={Transaction} /> */}
       </Switch>
     </Router>
   );

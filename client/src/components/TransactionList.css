@@ -10,4 +10,11 @@ background-color: rgb(191, 250, 191);
   font-size: 1em;
   
 }
+
+#delete {
+  color: red;
+}
   
+#edit {
+  color: black;
+}

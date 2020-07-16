@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 import TransactionDataService from '../services/TransactionsService';
 import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from './Flexbox';
-// import './TransactionList.css'
+import './TransactionList.css'
 
 const TransactionList = (props) => {
   // const initialTransactionState = {
   //   period: '2020-07'
   // };
-  const period = '2020-07'
+  const period = '2020-06'
   console.log(`propos=> ${props['period']}`)
   const [transactions, setTransaction] = useState([]);
   // const [currentTransaction, setCurrentTransaction] = useState(initialTransactionState);
   // const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchCategory, setSearchCategory] = useState('');
+  // const [currentTransaction, setCurrentTransaction] = useState();
+
 
   useEffect(() => {
     console.log(`PROPS -->> ${period}`);
@@ -29,7 +31,6 @@ const TransactionList = (props) => {
     TransactionDataService.getAll(period)
       .then((response) => {
         setTransaction(response.data);
-        // console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -47,6 +48,16 @@ const TransactionList = (props) => {
         setTransaction(response.data);
         console.log(response.data);
       })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const deleteTransaction = (id) => {
+    TransactionDataService.remove(id)
+      .then((response) => {
+          retrieveTransaction(period);
+        })
       .catch((e) => {
         console.log(e);
       });
@@ -97,11 +108,13 @@ const TransactionList = (props) => {
                       to={'/api/transaction/' + transaction._id}
                       className="badge badge-warning"
                       >
-                      <i class="material-icons">edit</i>
+                      <i id="edit" className="material-icons">edit</i>
                     </Link>  
                   </Col>
                   <Col size={1} align={'center'}>
-                  <i class="material-icons">remove_circle</i>
+                    <button className="badge badge-danger mr-2" onClick={() => deleteTransaction(transaction._id)}>
+                      <i id="delete" className="material-icons" color="red">remove_circle</i>
+                    </button>
                   </Col>
                 </Row>
               </ul>
