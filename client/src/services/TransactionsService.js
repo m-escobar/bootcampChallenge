@@ -20,8 +20,8 @@ const remove = (id) => {
   return http.delete(`/api/transaction/${id}`);
 };
 
-// const findByName = (name) => {
-//   return http.get(`/grade?name=${name}`);
+// const findByCategory = (category) => {
+//   return http.get(`/transaction?category=${category}`);
 // };
 
 export default {
@@ -30,4 +30,5 @@ export default {
   create,
   update,
   remove,
+  // findByCategory
 };
