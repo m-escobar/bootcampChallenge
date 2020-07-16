@@ -1,5 +1,9 @@
 .transaction-blue {
-background-color: rgb(191, 250, 191);
+  background-color: rgb(191, 250, 191);
+  border-radius: 5px;
+  padding: 5px;
+  text-align: center;
+  font-size: 1em;
 }
 
 .transaction-red {
@@ -8,13 +12,16 @@ background-color: rgb(191, 250, 191);
   padding: 5px;
   text-align: center;
   font-size: 1em;
-  
 }
 
-#delete {
+#delete{
   color: red;
 }
   
 #edit {
   color: black;
+}
+
+#cancel {
+  color: red;
 }

@@ -70,7 +70,7 @@ const TransactionList = (props) => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search by category"
+            placeholder="Procurar por Categoria"
             value={searchCategory}
             onChange={onChangeSearchCategory}
           />
@@ -80,7 +80,7 @@ const TransactionList = (props) => {
               type="button"
               onClick={findByCategory}
             >
-              Search
+              Procurar
             </button>
           </div>
         </div>
@@ -113,7 +113,7 @@ const TransactionList = (props) => {
                   </Col>
                   <Col size={1} align={'center'}>
                     <button className="badge badge-danger mr-2" onClick={() => deleteTransaction(transaction._id)}>
-                      <i id="delete" className="material-icons" color="red">remove_circle</i>
+                      <i id="delete" className="material-icons">remove_circle</i>
                     </button>
                   </Col>
                 </Row>

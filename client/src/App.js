@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 
 // import AddGrade from './components/AddGrade';
-// import Grade from './components/Grade';
+import Transaction from './components/Transaction';
 import TransactionList from './components/TransactionList';
 
 export default function App() {
