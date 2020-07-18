@@ -70,7 +70,7 @@ const TransactionList = (props) => {
     <div className="list row">
       <div className="col-md-8">
         <SearchBox period="2020-06"/>
-        <DropBox />
+        {/* <DropBox /> */}
         {/* <div className="input-group mb-3">
           <input
             type="text"

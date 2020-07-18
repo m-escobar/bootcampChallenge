@@ -37,7 +37,19 @@ const Transaction = (props) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setCurrentTransaction({ ...currentTransaction, [name]: value });
+
+    if(name == 'yearMonthDay'){
+      const ymd = new Date(value);
+      
+      const day = ymd.getDate() + 1;
+      const month = ymd.getMonth() + 1;
+      const year = ymd.getFullYear();
+      
+      setCurrentTransaction({ ...currentTransaction, [name]: value, ['year']: year, 
+                              ['month']: month, ['day']: day, ['yearMonth']: `${year}-${month}` });
+    } else {
+      setCurrentTransaction({ ...currentTransaction, [name]: value });
+    }
   };
 
   const updateTransaction = () => {
@@ -93,7 +105,7 @@ const Transaction = (props) => {
             <div className="form-group">
               <label htmlFor="yearMonthDay">Data</label>
               <input
-                type="number"
+                type="date"
                 className="form-control"
                 id="yearMonthDay"
                 name="yearMonthDay"

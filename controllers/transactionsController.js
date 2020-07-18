@@ -53,8 +53,11 @@ const findOne = async (req, res) => {
 
 const findAll = async (req, res) => { 
   const request = req.params['period'];
-  
-console.log(`request=====>> ${request['period']}`)
+  const category = req.query['category'];
+
+console.log(`period=====>> ${request}`)
+
+console.log(`category=====>> ${category}`)
 
   if (!request) {
     return res.status(400).send({
