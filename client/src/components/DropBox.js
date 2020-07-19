@@ -1,31 +1,74 @@
 import React, { useState, useEffect } from 'react';
-// import TransactionDataService from '../services/TransactionsService';
+import TransactionDataService from '../services/TransactionsService';
 
-const DropBox = (pros) => {
-  const defaultValue = '2020-06';
 
-  const changeDate = (event) => {
-    this.setState({value: event.target.value});
+const DropBox = (props) => {
+  const currentPeriod = props['period'];
+  var dataArray = [];
+
+  for(var cp in currentPeriod) {
+    dataArray.push(currentPeriod[cp]);
   }
+  
+  const thisPeriod = dataArray[7];
+  const [periods, setPeriods] = useState([]);
 
-  const datePeriods = ['2020-06', '2020-04'];
+  useEffect(() => {
+    // console.log(`DATA -->> ${period}`);
+    getPeriods();
+  }, []);
+
+const getPeriods = () => {
+  TransactionDataService.periods()
+    .then((response) => {
+      setPeriods(response.data);
+      console.log(response.data)
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+  // const allPeriods = getPeriods;
+
+
+  const Add = periods.map(Add => Add);
+  const handlePeriodChange = (e) => {
+    console.log((periods[e.target.value]))
+  };
+
   return (
-    <div>
-      <form>
-        <label htmlFor="date">Selecione o Período</label>
-        <select value={defaultValue} onChange={changeDate}>
-          <option key="0" value={defaultValue}>Selecione o Período</option>
-          {datePeriods.map((data) => {
-            return(
-              <option key={data.id} value={data.yearMonth}>
-                {data.label}
-              </option>
-            )
-          })}
-        </select>
-      </form>
-    </div>
-  )
-}
+    < select
+      onChange={e => handlePeriodChange(e)}
+      className="browser-default" >
+      {
+        Add.map((period, key) => <option key={key}value={key}>{period}</option>)
+      }
+    </select >
+    )
+};
+
 
 export default DropBox;
+
+// export default DropBox;
+
+// const dropdownlist = ["item1", "item2", "item3"]
+
+// const DropBox = () => {
+//   const [firstdropdown, setFirstdropdown] = useState("I am the first!");
+//   return(
+//     <label htmlFor="First Dropdown">
+//       First Dropdown
+//         <select
+//           id="first"
+//           value={firstdropdown}
+//           onChange={e=> setFirstdropdown(e.target.value)}
+//           onBlur={e=> setFirstdropdown(e.target.value)}
+//           disabled={!dropdownlist.length}>
+//             <option>All</option>
+//             {dropdownlist.map((item) =>(<option key={item} value={item}>
+//             </option>))}
+//         </select>
+//     </label>
+//   );
+// }

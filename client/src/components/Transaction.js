@@ -38,7 +38,7 @@ const Transaction = (props) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
-    if(name == 'yearMonthDay'){
+    if(name === 'yearMonthDay'){
       const ymd = new Date(value);
       
       const day = ymd.getDate() + 1;

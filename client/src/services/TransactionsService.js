@@ -1,5 +1,9 @@
 import http from '../http-common';
 
+const periods = () => {
+  return http.get('/api/transaction/periods');
+};
+
 const getAll = (data) => {
   return http.get(`api/transaction/all/${data}`);
 };
@@ -25,6 +29,7 @@ const remove = (id) => {
 // };
 
 export default {
+  periods,
   getAll,
   get,
   create,

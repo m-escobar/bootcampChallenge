@@ -66,16 +66,29 @@ console.log(`category=====>> ${category}`)
   }
 
   try {
-    const all_transactions = await transactionModel.find({ yearMonth: request });
-    all_transactions;
+    const allTransactions = await transactionModel.find({ yearMonth: request });
 
-    res.send(all_transactions);
+    res.send(allTransactions);
     logger.info('GET /transaction/all/:period');
   } catch (error) {
     res
       .status(500)
       .send({ message: error.message || 'Error listing documents' });
     logger.error(`GET /transaction/all/:period - ${JSON.stringify(error.message)}`);
+  }
+};
+
+const findPeriods = async (_, res) => { 
+  try {
+    const allData = await transactionModel.distinct('yearMonth');
+
+    res.send(allData);
+    logger.info('GET /transaction/periods');
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Error listing documents' });
+    logger.error(`GET /transaction/periods - ${JSON.stringify(error.message)}`);
   }
 };
 
@@ -136,4 +149,4 @@ const remove = async (req, res) => {
   }
 };
 
-module.exports = { create, findAll, findOne, update, remove };
+module.exports = { create, findAll, findOne, update, remove, findPeriods };
