@@ -72,6 +72,9 @@ const Transaction = (props) => {
           <h4>Editar Operação</h4>
           <form>
             <div className="form-group">
+              <label htmlFor="type">{currentTransaction.type === '+' ? 'Receita' : 'Despesa'}</label>
+            </div>
+            <div className="form-group">
               <label htmlFor="description">Descrição</label>
               <input
                 type="text"
@@ -138,14 +141,15 @@ const Transaction = (props) => {
             </Col>
             <Col size={6} />
             </Row>
-          
-          <p>{message}
+          <br />
+          <p>
             <Link to={'/'}>
               <button className="btn btn-primary">
-                Lista de Operações
+                Retornar para Lista de Operações
               </button>
             </Link>
           </p>
+          <p>{message}</p>
         </div>
       ) : (
         <div>
