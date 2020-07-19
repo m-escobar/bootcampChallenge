@@ -3,50 +3,51 @@ import TransactionDataService from '../services/TransactionsService';
 
 
 const DropBox = (props) => {
-  const currentPeriod = props['period'];
+  const [periods, setPeriods] = useState([props]);
   var dataArray = [];
+  var allPeriods = [];
+
+  const currentPeriod = props['period'];
+  const periodsProps = props['periods'];
 
   for(var cp in currentPeriod) {
     dataArray.push(currentPeriod[cp]);
   }
-  
   const thisPeriod = dataArray[7];
-  const [periods, setPeriods] = useState([]);
+  
+  for(var p in periodsProps) {
+    allPeriods.push(periodsProps[p]);
+  }
+    // console.log(`---->>>>>> ${allPeriods}<<<<<<<--------`);
 
   useEffect(() => {
     // console.log(`DATA -->> ${period}`);
-    getPeriods();
-  }, []);
-
-const getPeriods = () => {
-  TransactionDataService.periods()
-    .then((response) => {
-      setPeriods(response.data);
-      console.log(response.data)
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-};
-  // const allPeriods = getPeriods;
+    setPeriods(props);
+  }, [props]);
 
 
-  const Add = periods.map(Add => Add);
-  const handlePeriodChange = (e) => {
-    console.log((periods[e.target.value]))
-  };
+// const allPeriods = ['1', '2', '3'];
 
-  return (
-    < select
-      onChange={e => handlePeriodChange(e)}
-      className="browser-default" >
-      {
-        Add.map((period, key) => <option key={key}value={key}>{period}</option>)
-      }
-    </select >
-    )
+// console.log(getPeriods)
+// setPeriods(allPeriods);
+// console.log(allPeriods);
+
+const Add = allPeriods.map(Add => Add);
+
+const handlePeriodChange = (e) => {
+  console.log(`P--->>> ${periods[e.target.value]}`);
 };
 
+return (
+  < select
+    onChange={e => handlePeriodChange(e)}
+    className="browser-default" >
+    {
+      Add.map((period, key) => <option key={key}value={key}>{period}</option>)
+    }
+  </select >
+  )
+};
 
 export default DropBox;
 

@@ -10,18 +10,20 @@ const TransactionList = (props) => {
   // const initialTransactionState = {
   //   period: '2020-07'
   // };
-  const period = '2020-06'
-  console.log(`propos=> ${props['period']}`)
+  const period = '2020-06';
+  // console.log(`propos=> ${props['period']}`)
   const [transactions, setTransaction] = useState([]);
+  const [allPeriods, setAllPeriods] = useState();
+
   // const [searchCategory, setSearchCategory] = useState('');
   // const [currentTransaction, setCurrentTransaction] = useState(initialTransactionState);
   // const [currentIndex, setCurrentIndex] = useState(-1);
   // const [currentTransaction, setCurrentTransaction] = useState();
 
-
   useEffect(() => {
     console.log(`DATA -->> ${period}`);
     retrieveTransaction(period);
+    getPeriods();
   }, [period]);
 
   // const onChangeSearchCategory = (e) => {
@@ -33,6 +35,18 @@ const TransactionList = (props) => {
     TransactionDataService.getAll(period)
       .then((response) => {
         setTransaction(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+
+  const getPeriods = () => {
+    TransactionDataService.periods()
+      .then((response) => {
+        // console.log(response.data)
+        setAllPeriods(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -65,12 +79,16 @@ const TransactionList = (props) => {
       });
   };
 
+  //  getPeriods();
+  // console.log('>>>>>>>>>>>>>>>')
+  // console.log(allPeriods)
+
   return (    
     <Grid>
     <div className="list row">
       <div className="col-md-8">
         <SearchBox period="2020-06"/>
-        <DropBox period={transactions[0]}/>
+        <DropBox period={transactions[0]} periods={allPeriods}/>
         {/* <div className="input-group mb-3">
           <input
             type="text"
