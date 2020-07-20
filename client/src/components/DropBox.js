@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import TransactionDataService from '../services/TransactionsService';
-
+import M from 'materialize-css';
 
 const DropBox = (props) => {
   const [periods, setPeriods] = useState([props]);
+  // const [currentPeriod, setCurrentPeriod] = useState();
+  const [value, setValue] = useState();
+
   var dataArray = [];
   var allPeriods = [];
 
@@ -20,30 +22,39 @@ const DropBox = (props) => {
   }
     // console.log(`---->>>>>> ${allPeriods}<<<<<<<--------`);
 
+
+  // useEffect(() => {
+  //   // console.log(`DATA -->> ${period}`);
+  // }, [value]);
+
+
   useEffect(() => {
     // console.log(`DATA -->> ${period}`);
+    M.AutoInit();
     setPeriods(props);
   }, [props]);
 
 
 // const allPeriods = ['1', '2', '3'];
 
-// console.log(getPeriods)
+// console.log(`>>>THIS${thisPeriod}`)
 // setPeriods(allPeriods);
 // console.log(allPeriods);
 
 const Add = allPeriods.map(Add => Add);
 
 const handlePeriodChange = (e) => {
-  console.log(`P--->>> ${periods[e.target.value]}`);
+  console.log(`P--->>> ${e.currentTarget.value}`);
+  setValue(e.currentTarget.value);
 };
 
 return (
   < select
+    value={thisPeriod}
     onChange={e => handlePeriodChange(e)}
-    className="browser-default" >
+  >
     {
-      Add.map((period, key) => <option key={key}value={key}>{period}</option>)
+      Add.map((period, key) => <option key={key}value={period}>{period}</option>)
     }
   </select >
   )

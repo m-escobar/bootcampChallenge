@@ -2,18 +2,26 @@ import React, { useState, useEffect } from 'react';
 import TransactionDataService from '../services/TransactionsService';
 import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from './Flexbox';
-import './TransactionList.css'
 import SearchBox from './SearchBox';
 import DropBox from './DropBox';
 
+import './TransactionList.css';
+
 const TransactionList = (props) => {
+  // constructor() {
+  //   this.state = {
+  //     value: ''
+  //   };
+  // }
+
   // const initialTransactionState = {
-  //   period: '2020-07'
+    // period: '2020-07'
   // };
   const period = '2020-06';
   // console.log(`propos=> ${props['period']}`)
   const [transactions, setTransaction] = useState([]);
   const [allPeriods, setAllPeriods] = useState();
+  const [currentPeriod, setCurrentPeriod] = useState();
 
   // const [searchCategory, setSearchCategory] = useState('');
   // const [currentTransaction, setCurrentTransaction] = useState(initialTransactionState);
@@ -22,9 +30,11 @@ const TransactionList = (props) => {
 
   useEffect(() => {
     console.log(`DATA -->> ${period}`);
-    retrieveTransaction(period);
     getPeriods();
-  }, [period]);
+    // setCurrentPeriod(allPeriods[allPeriods.length -1]);
+    // console.log(currentPeriod);
+    retrieveTransaction(period);
+  }, [period, currentPeriod]);
 
   // const onChangeSearchCategory = (e) => {
   //   const searchCategory = e.target.value;
@@ -82,13 +92,24 @@ const TransactionList = (props) => {
   //  getPeriods();
   // console.log('>>>>>>>>>>>>>>>')
   // console.log(allPeriods)
+  // console.log(`[[[[[[${allPeriods}]]]]]]`)
+
+  
+  const handleSelectChangeValue = (e) => {
+    // console.log(`X--->>> ${e.target.value}`);
+ 
+    // setCurrentPeriod(period);
+    }
 
   return (    
     <Grid>
     <div className="list row">
       <div className="col-md-8">
         <SearchBox period="2020-06"/>
-        <DropBox period={transactions[0]} periods={allPeriods}/>
+        {/* <DropBox periods={allPeriods}/>    */}
+        {console.log(`???????${transactions[0]}`)}
+        <DropBox period={transactions[0]} periods={allPeriods} onChangeValue={handleSelectChangeValue()}/>
+        {console.log(`!!!!!${transactions[0]}`)}
         {/* <div className="input-group mb-3">
           <input
             type="text"
