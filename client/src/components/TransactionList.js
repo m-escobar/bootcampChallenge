@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from './Flexbox';
 import SearchBox from './SearchBox';
 import DropBox from './DropBox';
+import NewButton from './NewButton';
 
 import './TransactionList.css';
 
@@ -106,8 +107,8 @@ const TransactionList = (props) => {
     <div className="list row">
       <div className="col-md-8">
         <SearchBox period="2020-06"/>
-        {/* <DropBox periods={allPeriods}/>    */}
-        {console.log(`???????${transactions[0]}`)}
+        <NewButton />
+
         <DropBox period={transactions[0]} periods={allPeriods} onChangeValue={handleSelectChangeValue()}/>
         {console.log(`!!!!!${transactions[0]}`)}
         {/* <div className="input-group mb-3">

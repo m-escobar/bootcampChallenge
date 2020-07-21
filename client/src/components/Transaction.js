@@ -44,7 +44,6 @@ const Transaction = (props) => {
       const day = ymd.getDate() + 1;
       const month = ymd.getMonth() + 1;
       const year = ymd.getFullYear();
-      console.log(month.length)
       const fullMonth = month <= 9 ? `0${month}` : month;
       
       setCurrentTransaction({ ...currentTransaction, [name]: value, ['year']: year, 
