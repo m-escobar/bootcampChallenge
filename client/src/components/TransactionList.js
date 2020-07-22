@@ -10,9 +10,14 @@ import Profile from './Profile';
 import './TransactionList.css';
 
 const TransactionList = () => {
-  const [period, setPeriod] = useState({
-    ym: '2020-06'
+  // const [period, setPeriod] = useState({
+  //   ym: '2020-06'
+  // });
+
+  const [currentPeriod, setCurrentPeriod] = useState({
+    ym: '2020-07'
   });
+
 
 
   const [state, setState] = useState({
@@ -33,7 +38,7 @@ const TransactionList = () => {
   // console.log(`propos=> ${props['period']}`)
   const [transactions, setTransaction] = useState([]);
   const [allPeriods, setAllPeriods] = useState();
-  const [currentPeriod, setCurrentPeriod] = useState();
+  // const [currentPeriod, setCurrentPeriod] = useState();
 
   // const [searchCategory, setSearchCategory] = useState('');
   // const [currentTransaction, setCurrentTransaction] = useState(initialTransactionState);
@@ -41,12 +46,12 @@ const TransactionList = () => {
   // const [currentTransaction, setCurrentTransaction] = useState();
 
   useEffect(() => {
-    console.log(`DATA -->> ${period}`);
+    console.log(`DATA -->> ${currentPeriod}`);
     getPeriods();
     // setCurrentPeriod(allPeriods[allPeriods.length -1]);
     // console.log(currentPeriod);
-    retrieveTransaction(period.ym);
-  }, [period, currentPeriod]);
+    retrieveTransaction(currentPeriod.ym);
+  }, [currentPeriod]);
 
   // const onChangeSearchCategory = (e) => {
   //   const searchCategory = e.target.value;
@@ -94,7 +99,7 @@ const TransactionList = () => {
   const deleteTransaction = (id) => {
     TransactionDataService.remove(id)
       .then((response) => {
-          retrieveTransaction(period);
+          retrieveTransaction(currentPeriod);
         })
       .catch((e) => {
         console.log(e);
@@ -113,6 +118,12 @@ const TransactionList = () => {
     // setCurrentPeriod(period);
     }
 
+  const handleSearchBoxChange = (e) => {
+        console.log(`X--->>> ${e}`);
+
+  }
+
+
   return (    
     <Grid>
     <div className="list row">
@@ -120,7 +131,7 @@ const TransactionList = () => {
       <button onClick={handleChange}>Change Profile</button>
       <div className="col-md-8">
         {/* <SearchBox period="2020-06"/> */}
-        <SearchBox {...state} />
+        <SearchBox {...currentPeriod} onChangeValue={handleSearchBoxChange(currentPeriod)} />
         <NewButton />
 
         <DropBox period={transactions[0]} periods={allPeriods} onChangeValue={handleSelectChangeValue()}/>

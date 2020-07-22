@@ -5,17 +5,13 @@ const SearchBox = props => {
   const [searchBox, setSearchBox] = useState(props);
 
   const [searchCategory, setSearchCategory] = useState('');
-  const [transactions, setTransaction] = useState([]);
+  // const [transactions, setTransaction] = useState([]);
 
-  var dataArray = [];
-  const currentPeriod = props['period'];
+  useEffect(() => {
+    setSearchBox(props);
+  }, [props]);
 
-  for(var cp in currentPeriod) {
-    dataArray.push(currentPeriod[cp]);
-  }
-
-
-  console.log(`FIND_PERIOD - ${currentPeriod}`)
+  console.log(`FIND_PERIOD - ${searchBox.ym}`)
 
 
 
@@ -26,9 +22,9 @@ const SearchBox = props => {
 
   const findByCategory = () => {
     console.log(`findby= ${(searchCategory)}`)
-    TransactionDataService.getAll(currentPeriod, searchCategory)
+    TransactionDataService.getAll(searchBox.ym, searchCategory)
       .then((response) => {
-        setTransaction(response.data);
+        setSearchBox(response.data);
         console.log(response.data);
       })
       .catch((e) => {
