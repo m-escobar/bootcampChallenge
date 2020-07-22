@@ -17,7 +17,7 @@ const TransactionList = () => {
   });
 
   const [currentPeriod, setCurrentPeriod] = useState({
-    ym: '2020-03'
+    ym: '2021-07'
   });
 
   const [transactions, setTransaction] = useState([]);

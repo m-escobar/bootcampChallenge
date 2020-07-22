@@ -66,8 +66,8 @@ console.log(`search=====>> ${search}`)
   }
 
   try {
-    const allTransactions = search === null ? await transactionModel.find({ yearMonth: request })
-                                            : await transactionModel.find({ yearMonth: request, description: {'$regex': search, '$options': 'i'}});
+    const allTransactions = search === null ? await transactionModel.find({ yearMonth: request }).sort( { day: 1 })
+                                            : await transactionModel.find({ yearMonth: request, description: {'$regex': search, '$options': 'i'}}).sort( { day: 1 });
 
     res.send(allTransactions);
     logger.info('GET /transaction/all/:period');

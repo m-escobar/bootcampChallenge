@@ -39,23 +39,28 @@ const Transaction = (props) => {
     const { name, value } = event.target;
 
     if(name === 'yearMonthDay'){
-      const ymd = new Date(value);
-      
-      const day = ymd.getDate() + 1;
-      const month = ymd.getMonth() + 1;
-      const year = ymd.getFullYear();
-      const fullMonth = month <= 9 ? `0${month}` : month;
-      
+      const ymd = value;
+
+      const day = ymd.substring(8, 10);
+      const month = ymd.substring(5, 7);
+      const year = ymd.substring(0, 4);
+      const yearMonth = ymd.substring(0, 7);
+
       setCurrentTransaction({ ...currentTransaction, [name]: value, ['year']: year, 
-                              ['month']: month, ['day']: day, ['yearMonth']: `${year}-${fullMonth}` });
+                              ['month']: month, ['day']: day, ['yearMonth']: yearMonth });
     } else {
       setCurrentTransaction({ ...currentTransaction, [name]: value });
     }
   };
 
   const updateTransaction = () => {
+    // console.log('<<<<<<<<<<<<<')
+    // console.log(currentTransaction.type)
+    // console.log(currentTransaction._id)
+
     TransactionDataService.update(currentTransaction._id, currentTransaction)
       .then((response) => {
+
         setMessage('The transaction was updated successfully!');
       })
       .catch((e) => {
