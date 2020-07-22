@@ -1,56 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import M from 'materialize-css';
 
-const DropBox = (props) => {
-  const [periods, setPeriods] = useState([props]);
-  // const [currentPeriod, setCurrentPeriod] = useState();
+const DateSelector = (props) => {
+  const [currentPeriod, setCurrentPeriod] = useState(props.period);
+  
   const [value, setValue] = useState();
 
-  var dataArray = [];
-  var allPeriods = [];
+  console.log('>>>>>>>>>>>>><<<<<<<<<<');
+  console.log(currentPeriod)
 
-  const currentPeriod = props['period'];
-  const periodsProps = props['periods'];
 
-  for(var cp in currentPeriod) {
-    dataArray.push(currentPeriod[cp]);
-  }
-  const thisPeriod = dataArray[7];
+  useEffect(() => {
+    M.AutoInit();
+    // setPeriods(props.periods)
+    // setCurrentPeriod();
+  }, [props]);
+
+
+  const allPeriods = [];
   
-  for(var p in periodsProps) {
-    allPeriods.push(periodsProps[p]);
+  for(var ap in props.periodsArray) {
+    allPeriods.push(props.periodsArray[ap]);
   }
-    // console.log(`---->>>>>> ${allPeriods}<<<<<<<--------`);
+  // console.log('000000000000000')
+  // console.log(allPeriods)
 
 
   // useEffect(() => {
   //   // console.log(`DATA -->> ${period}`);
   // }, [value]);
 
-
-  useEffect(() => {
-    // console.log(`DATA -->> ${period}`);
-    M.AutoInit();
-    setPeriods(props);
-  }, [props]);
-
-
-// const allPeriods = ['1', '2', '3'];
-
 // console.log(`>>>THIS${thisPeriod}`)
 // setPeriods(allPeriods);
 // console.log(allPeriods);
 
-const Add = allPeriods.map(Add => Add);
+const Add = allPeriods ? allPeriods.map(Add => Add) : []
 
 const handlePeriodChange = (e) => {
-  console.log(`P--->>> ${e.currentTarget.value}`);
-  setValue(e.currentTarget.value);
+  setCurrentPeriod(e.currentTarget.value);
+  onPeriodUpdate(currentPeriod);
+  console.log(`P--->>> `);
+  console.log(currentPeriod)
 };
 
 return (
   < select
-    value={thisPeriod}
+    value={currentPeriod}
     onChange={e => handlePeriodChange(e)}
   >
     {
@@ -60,7 +55,7 @@ return (
   )
 };
 
-export default DropBox;
+export default DateSelector;
 
 // export default DropBox;
 

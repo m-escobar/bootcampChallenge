@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import TransactionDataService from '../services/TransactionsService';
-import { Link } from 'react-router-dom';
-import { Grid, Row, Col } from './Flexbox';
+import { Grid } from './Flexbox';
 // import SearchBox from './SearchBox';
-// import DropBox from './DropBox';
 // import NewButton from './NewButton';
-import Profile from './Profile';
 
-import './TransactionList.css';
 import TransactionRow from './TransactionRow';
+import DateSelector from './DateSelector';
+import './TransactionList.css';
+
+import Profile from './Profile';
 
 const TransactionList = () => {
   const [state, setState] = useState({
     name: 'Param',
     email: 'param@gmail.com',
   });
-
+  
+  const [allPeriods, setAllPeriods] = useState();
   const [currentPeriod, setCurrentPeriod] = useState({
     ym: '2021-07'
   });
-
   const [transactions, setTransaction] = useState([]);
   
-  const [allPeriods, setAllPeriods] = useState();
-
+  const updatePeriod = (period) => {
+    setCurrentPeriod(period);
+  }
+  
   useEffect(() => {
     getPeriods();
   }, [state]);
@@ -64,9 +66,18 @@ const TransactionList = () => {
     });
   };
 
-  const handleDelete = () => {
-
+  const handlePeriodChange = () => {
+    const select = document.getElementsByClassName('select-dropdown')[0];
+    
+    const newPeriod = select ? select.value : '';
+    console.log('eeeeeeeeeeeeee')
+    console.log(newPeriod)
+    console.log('-----------')
   }
+
+  // console.log('===============')
+  // console.log(currentPeriod)
+  // console.log(allPeriods)
 
   return (    
     <Grid>
@@ -74,7 +85,8 @@ const TransactionList = () => {
         <Profile {...state} />
         <button onClick={handleChange}>Change Profile</button>
 
-
+        <DateSelector period={currentPeriod.ym} periodsArray={allPeriods} onPeriodUpdate={updatePeriod} />
+        {/* onChangeValue={handlePeriodChange()} /> */}
         <div className="col-md-6">
           <h4>Operações Realizadas</h4>
             {transactions &&

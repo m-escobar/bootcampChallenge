@@ -14,7 +14,7 @@ const Transaction = (props) => {
     month: 0,
     day: 0,
     yearMonth: '',
-    yearMonthDay: 0,
+    yearMonthDay: '',
     type: ''
   };
 
