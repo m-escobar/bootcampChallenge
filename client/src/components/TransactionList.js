@@ -5,20 +5,31 @@ import { Grid, Row, Col } from './Flexbox';
 import SearchBox from './SearchBox';
 import DropBox from './DropBox';
 import NewButton from './NewButton';
+import Profile from './Profile';
 
 import './TransactionList.css';
 
-const TransactionList = (props) => {
-  // constructor() {
-  //   this.state = {
-  //     value: ''
-  //   };
-  // }
+const TransactionList = () => {
+  const [period, setPeriod] = useState({
+    ym: '2020-06'
+  });
+
+
+  const [state, setState] = useState({
+    name: 'Param',
+    email: 'param@gmail.com',
+  });
+  const handleChange = () => {
+    setState({
+      name: 'Vennila',
+      email: 'vennila@gmail.com',
+    });
+  };
+
 
   // const initialTransactionState = {
     // period: '2020-07'
   // };
-  const period = '2020-06';
   // console.log(`propos=> ${props['period']}`)
   const [transactions, setTransaction] = useState([]);
   const [allPeriods, setAllPeriods] = useState();
@@ -34,7 +45,7 @@ const TransactionList = (props) => {
     getPeriods();
     // setCurrentPeriod(allPeriods[allPeriods.length -1]);
     // console.log(currentPeriod);
-    retrieveTransaction(period);
+    retrieveTransaction(period.ym);
   }, [period, currentPeriod]);
 
   // const onChangeSearchCategory = (e) => {
@@ -43,7 +54,7 @@ const TransactionList = (props) => {
   // };
 
   const retrieveTransaction = (period) => {
-    TransactionDataService.getAll(period)
+    TransactionDataService.getAll(period, '')
       .then((response) => {
         setTransaction(response.data);
       })
@@ -105,8 +116,11 @@ const TransactionList = (props) => {
   return (    
     <Grid>
     <div className="list row">
+    <Profile {...state} />
+      <button onClick={handleChange}>Change Profile</button>
       <div className="col-md-8">
-        <SearchBox period="2020-06"/>
+        {/* <SearchBox period="2020-06"/> */}
+        <SearchBox {...state} />
         <NewButton />
 
         <DropBox period={transactions[0]} periods={allPeriods} onChangeValue={handleSelectChangeValue()}/>

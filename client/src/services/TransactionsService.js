@@ -4,8 +4,8 @@ const periods = () => {
   return http.get('/api/transaction/periods');
 };
 
-const getAll = (data) => {
-  return http.get(`api/transaction/all/${data}`);
+const getAll = (period, search) => {
+  return http.get(`api/transaction/all/${period}?search=${search}`);
 };
 
 const get = (id) => {

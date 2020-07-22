@@ -53,11 +53,11 @@ const findOne = async (req, res) => {
 
 const findAll = async (req, res) => { 
   const request = req.params['period'];
-  const category = req.query['category'];
+  const search = req.query['search'] || null;
 
 console.log(`period=====>> ${request}`)
 
-console.log(`category=====>> ${category}`)
+console.log(`search=====>> ${search}`)
 
   if (!request) {
     return res.status(400).send({
@@ -66,7 +66,8 @@ console.log(`category=====>> ${category}`)
   }
 
   try {
-    const allTransactions = await transactionModel.find({ yearMonth: request });
+    const allTransactions = search === null ? await transactionModel.find({ yearMonth: request })
+                                            : await transactionModel.find({ yearMonth: request, description: {'$regex': search, '$options': 'i'}});
 
     res.send(allTransactions);
     logger.info('GET /transaction/all/:period');
