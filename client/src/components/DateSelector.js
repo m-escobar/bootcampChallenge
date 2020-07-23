@@ -4,7 +4,7 @@ import M from 'materialize-css';
 const DateSelector = ({period, periodsArray, onPeriodUpdate}) => {
   const [currentPeriod, setCurrentPeriod] = useState(period);
   
-  const [value, setValue] = useState();
+  // const [value, setValue] = useState();
 
   useEffect(() => {
     M.AutoInit();

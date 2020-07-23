@@ -3,7 +3,7 @@ import TransactionDataService from '../services/TransactionsService';
 import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from './Flexbox';
 import SearchBox from './SearchBox';
-import DropBox from './DropBox';
+import DropBox from './DateSelector';
 import NewButton from './NewButton';
 import Profile from './Profile';
 
@@ -13,10 +13,6 @@ const TransactionList = () => {
   // const [period, setPeriod] = useState({
   //   ym: '2020-06'
   // });
-
-  const [currentPeriod, setCurrentPeriod] = useState({
-    ym: '2020-06'
-  });
 
 
 
@@ -36,22 +32,12 @@ const TransactionList = () => {
     // period: '2020-07'
   // };
   // console.log(`propos=> ${props['period']}`)
-  const [transactions, setTransaction] = useState([]);
-  const [allPeriods, setAllPeriods] = useState();
   // const [currentPeriod, setCurrentPeriod] = useState();
 
   // const [searchCategory, setSearchCategory] = useState('');
   // const [currentTransaction, setCurrentTransaction] = useState(initialTransactionState);
   // const [currentIndex, setCurrentIndex] = useState(-1);
   // const [currentTransaction, setCurrentTransaction] = useState();
-
-  useEffect(() => {
-    console.log(`DATA -->> ${currentPeriod}`);
-    getPeriods();
-    // setCurrentPeriod(allPeriods[allPeriods.length -1]);
-    // console.log(currentPeriod);
-    retrieveTransaction(currentPeriod.ym);
-  }, [currentPeriod]);
 
   // const onChangeSearchCategory = (e) => {
   //   const searchCategory = e.target.value;
@@ -69,16 +55,6 @@ const TransactionList = () => {
   };
 
 
-  const getPeriods = () => {
-    TransactionDataService.periods()
-      .then((response) => {
-        // console.log(response.data)
-        setAllPeriods(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
 
   // const setActiveTransaction = (transaction, index) => {
   //   setCurrentTransaction(transaction);
@@ -96,15 +72,6 @@ const TransactionList = () => {
   //     });
   // };
 
-  const deleteTransaction = (id) => {
-    TransactionDataService.remove(id)
-      .then((response) => {
-          retrieveTransaction(currentPeriod);
-        })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
 
   //  getPeriods();
   // console.log('>>>>>>>>>>>>>>>')
@@ -154,40 +121,6 @@ const TransactionList = () => {
             </button>
           </div>
         </div> */}
-      </div>
-      <div className="col-md-6">
-        <h4>Operações Realizadas</h4>
-          {transactions &&
-            transactions.map((transaction, index) => (
-            <ul className="transaction"
-              key={index}>
-              <Row color={transaction.type === '-' ? 'lightpink' : 'rgb(191, 250, 191)'}>
-                <Col size={1} align={'center'}>
-                  <strong>{transaction.day}</strong>
-                </Col>
-                <Col size={6}>
-                  <strong>{transaction.description}</strong><br />
-                  Categoria: {transaction.category}
-                </Col>
-                <Col size={4} align={'right'}>
-                  R$ {transaction.value}
-                </Col>
-                <Col size={1} align={'right'}>
-                  <Link
-                    to={'/api/transaction/' + transaction._id}
-                    className="badge badge-warning"
-                    >
-                    <i id="edit" className="material-icons">edit</i>
-                  </Link>  
-                </Col>
-                <Col size={1} align={'center'}>
-                  <button className="badge badge-danger mr-2" onClick={() => deleteTransaction(transaction._id)}>
-                    <i id="delete" className="material-icons">remove_circle</i>
-                  </button>
-                </Col>
-              </Row>
-            </ul>
-          ))}
       </div>
     </div>
     </Grid>

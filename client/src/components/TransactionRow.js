@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col } from './Flexbox';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import DeleteTransaction from './DeleteTransaction';
 
 const TransactionRow = props => {
   const [transactionState, setTransactionState] = useState(props);
-  const [toHome, setToHome] = useState(false);
+  // const [toHome, setToHome] = useState(false);
   
   useEffect(() => {
     setTransactionState(props);
@@ -13,9 +13,9 @@ const TransactionRow = props => {
     
   return(
       <div>
-     { toHome ? (
+     {/* { toHome ? (
       <Redirect to='/' /> 
-      ) : (
+      ) : ( */}
           <Row color={transactionState.type === '-' ? 'lightpink' : (transactionState.type === '+' ? 'rgb(191, 250, 191)' : 'purple')}>
             <Col size={1} align={'center'}>
               <strong>{transactionState.day}</strong>
@@ -42,8 +42,8 @@ const TransactionRow = props => {
               </button>
             </Col>
           </Row>
-          )
-        }
+          {/* )
+        } */}
         </div>
   )
 };
