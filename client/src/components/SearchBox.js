@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
  
 const SearchBox = ({period, OnSearchUpdate}) => {
-
   const [searchCategory, setSearchCategory] = useState('');
 
   const onChangeSearchCategory = (e) => {

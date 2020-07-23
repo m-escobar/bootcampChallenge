@@ -21,17 +21,17 @@ const AddTransaction = () => {
   };
 
   const saveTransaction = () => {
-    const ymd = new Date(transaction.yearMonthDay);
-    const day = ymd.getDate() + 1;
-    const simpleMonth = ymd.getMonth() + 1;
-    const year = ymd.getFullYear();
-    const month = simpleMonth <= 9 ? `0${simpleMonth}` : simpleMonth;
-    const yearMonth = `${year}-${month}`;
+    const ymd = transaction.yearMonthDay;
+
+    const day = parseInt(ymd.substring(8, 10));
+    const month = parseInt(ymd.substring(5, 7));
+    const year = parseInt(ymd.substring(0, 4));
+    const yearMonth = ymd.substring(0, 7);
 
     var data = {
       type: transaction.type,
       description: transaction.description,
-      value: transaction.value,
+      value: parseFloat(transaction.value),
       category: transaction.category,
       yearMonthDay: transaction.yearMonthDay,
 
@@ -41,6 +41,7 @@ const AddTransaction = () => {
       yearMonth: yearMonth,
     };
 
+    console.log(data)
     TransactionDataService.create(data)
       .then((response) => {
         setTransaction({

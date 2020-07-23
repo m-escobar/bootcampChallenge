@@ -55,10 +55,6 @@ const findAll = async (req, res) => {
   const request = req.params['period'];
   const search = req.query['search'] || null;
 
-console.log(`period=====>> ${request}`)
-
-console.log(`search=====>> ${search}`)
-
   if (!request) {
     return res.status(400).send({
       error: 'Period should be informed',
