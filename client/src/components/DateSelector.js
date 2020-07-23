@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import M from 'materialize-css';
 
-const DateSelector = (props) => {
-  const [currentPeriod, setCurrentPeriod] = useState(props.period);
+const DateSelector = ({period, periodsArray, onPeriodUpdate}) => {
+  const [currentPeriod, setCurrentPeriod] = useState(period);
   
   const [value, setValue] = useState();
 
-  console.log('>>>>>>>>>>>>><<<<<<<<<<');
-  console.log(currentPeriod)
+  // console.log('>>>>>>>>>>>>><<<<<<<<<<');
+  // console.log(currentPeriod)
 
 
   useEffect(() => {
     M.AutoInit();
     // setPeriods(props.periods)
     // setCurrentPeriod();
-  }, [props]);
+  });
 
 
   const allPeriods = [];
   
-  for(var ap in props.periodsArray) {
-    allPeriods.push(props.periodsArray[ap]);
+  for(var ap in periodsArray) {
+    allPeriods.push(periodsArray[ap]);
   }
   // console.log('000000000000000')
   // console.log(allPeriods)
@@ -38,9 +38,10 @@ const Add = allPeriods ? allPeriods.map(Add => Add) : []
 
 const handlePeriodChange = (e) => {
   setCurrentPeriod(e.currentTarget.value);
-  onPeriodUpdate(currentPeriod);
+  onPeriodUpdate(e.currentTarget.value);
   console.log(`P--->>> `);
-  console.log(currentPeriod)
+  console.log(e.currentTarget.value)
+  console.log('end P')
 };
 
 return (
