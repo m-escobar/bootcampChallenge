@@ -68,18 +68,6 @@ const TransactionList = () => {
     });
   };
 
-  const handlePeriodChange = () => {
-    const select = document.getElementsByClassName('select-dropdown')[0];
-    
-    const newPeriod = select ? select.value : '';
-    console.log('eeeeeeeeeeeeee')
-    console.log(newPeriod)
-    console.log('-----------')
-  }
-
-  // console.log('===============')
-  // console.log(currentPeriod)
-  // console.log(allPeriods)
 
   return (    
     <Grid>
@@ -87,7 +75,7 @@ const TransactionList = () => {
         <Profile {...state} />
         <button onClick={handleChange}>Change Profile</button>
 
-        <DateSelector period={currentPeriod.ym} periodsArray={allPeriods} onPeriodUpdate={updatePeriod} zcurrentPeriod={currentPeriod} />
+        <DateSelector period={currentPeriod.ym} periodsArray={allPeriods} onPeriodUpdate={updatePeriod} />
         {/* onChangeValue={handlePeriodChange()} /> */}
         <div className="col-md-6">
           <h4>Operações Realizadas</h4>
