@@ -1,7 +1,11 @@
 import http from '../http-common';
 
-const getAll = () => {
-  return http.get('/api/transaction');
+const periods = () => {
+  return http.get('/api/transaction/periods');
+};
+
+const getAll = (period, search) => {
+  return http.get(`api/transaction/all/${period}?search=${search}`);
 };
 
 const get = (id) => {
@@ -20,14 +24,16 @@ const remove = (id) => {
   return http.delete(`/api/transaction/${id}`);
 };
 
-// const findByName = (name) => {
-//   return http.get(`/grade?name=${name}`);
+// const findByCategory = (category) => {
+//   return http.get(`/transaction?category=${category}`);
 // };
 
 export default {
+  periods,
   getAll,
   get,
   create,
   update,
   remove,
+  // findByCategory
 };

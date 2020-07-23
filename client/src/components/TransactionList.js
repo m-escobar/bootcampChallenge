@@ -1,141 +1,125 @@
 import React, { useState, useEffect } from 'react';
 import TransactionDataService from '../services/TransactionsService';
-import { Link } from 'react-router-dom';
+
+import { Grid, Row, Col } from './Flexbox';
+import SearchBox from './SearchBox';
+import NewButton from './NewButton';
+import TransactionRow from './TransactionRow';
+import DateSelector from './DateSelector';
+import './TransactionList.css';
+import Summary from './Summary';
 
 const TransactionList = () => {
-  const [transaction, setTransaction] = useState([]);
-  const [currentTransaction, setCurrentTransaction] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
-  const [searchCategory, setSearchCategory] = useState('');
+  const [state] = useState();
+  const [allPeriods, setAllPeriods] = useState();
+  const [transactions, setTransaction] = useState([]);
+  
+  const today = new Date();
+  const newPeriod = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}`;
+  const [currentPeriod, setCurrentPeriod] = useState(newPeriod);
+  
+  const [info, setInfoState] = useState({
+    count: 3,
+    received: 2,
+    paid: 1,
+    balance: 1
+  });
 
   useEffect(() => {
-    retrieveTransaction();
-  }, []);
+    getPeriods();
+  }, [state]);
 
-  const onChangeSearchCategory = (e) => {
-    const searchCategory = e.target.value;
-    setSearchCategory(searchCategory);
-  };
+  useEffect(() => {
+    retrieveTransaction(currentPeriod, '');
+  }, [currentPeriod]);
 
-  const retrieveTransaction = () => {
-    TransactionDataService.getAll()
+
+  useEffect(() => {
+    const update = transactions ? transactions.map(Add => Add) : []
+    const count = update.length;
+
+    const allDebits = update.filter(debit => debit.type === '-');
+    const allCredits = update.filter(credit => credit.type === '+');
+
+    const totalDebits = allDebits.reduce((accumulator, current) => {
+      return accumulator + current.value;
+    }, 0);
+
+    const totalCredits = allCredits.reduce((accumulator, current) => {
+      return accumulator + current.value;
+    }, 0);
+
+    setInfoState({
+      count: count,
+      received: totalCredits,
+      paid: totalDebits,
+      balance: totalCredits - totalDebits
+    })
+  }, [transactions]);
+
+
+  
+  const getPeriods = () => {
+    TransactionDataService.periods()
       .then((response) => {
-        setTransaction(response.data);
-        console.log(response.data);
+        setAllPeriods(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
   };
 
-  const refreshList = () => {
-    retrieveTransaction();
-    setCurrentTransaction(null);
-    setCurrentIndex(-1);
-  };
-
-  const setActiveTransaction = (transaction, index) => {
-    setCurrentTransaction(transaction);
-    setCurrentIndex(index);
-  };
-
-  const findByCategory = () => {
-    TransactionDataService.findByCategory(searchCategory)
+  const retrieveTransaction = (period, searchKey) => {
+    TransactionDataService.getAll(period, searchKey)
       .then((response) => {
         setTransaction(response.data);
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
   };
 
-  return (
-    <div className="list row">
-      <div className="col-md-8">
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search by name"
-            value={searchCategory}
-            onChange={onChangeSearchCategory}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={findByCategory}
-            >
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
+  const updatePeriod = (period) => {
+    setCurrentPeriod(period);
+  }
+  
+
+  const handleInfoUpdate = () => {
+    setInfoState({
+    count: 3,
+    received: 2,
+    paid: 1,
+    balance: 1
+    });
+  };
+
+  const handleSearchChange = (searchKey) => {
+    retrieveTransaction(currentPeriod, searchKey);
+  }
+
+  return (    
+    <Grid>
+      <DateSelector period={currentPeriod} periodsArray={allPeriods} onPeriodUpdate={updatePeriod} />
+      <Summary info={info} OnInfoUpdate={handleInfoUpdate}  />
+      <Row >  
+        <Col size={1}>
+          <NewButton />
+        </Col>
+        <Col size={7}>
+          <SearchBox period={currentPeriod} OnSearchUpdate={handleSearchChange} />    
+        </Col>
+      </Row>
       <div className="col-md-6">
-        <h4>Grade List</h4>
-
-        <ul className="list-group">
-          {transaction &&
-            transaction.map((transaction, index) => (
-              <li
-                className={
-                  'list-group-item ' + (index === currentIndex ? 'active' : '')
-                }
-                onClick={() => setActiveTransaction(transaction, index)}
-                key={index}
-              >
-                {transaction.name}
-              </li>
-            ))}
-        </ul>
-
-
+        <h4>Operações Realizadas</h4>
+          {transactions &&
+            transactions.map((transaction, index) => (
+            <ul className="transaction"
+              key={index}>
+                <TransactionRow {...transaction} />
+            </ul>
+          ))}
       </div>
-      <div className="col-md-6">
-        {currentTransaction ? (
-          <div>
-            <h4>Transaction</h4>
-            <div>
-              <label>
-                <strong>Name:</strong>
-              </label>{' '}
-              {currentTransaction.name}
-            </div>
-            <div>
-              <label>
-                <strong>Subject:</strong>
-              </label>{' '}
-              {currentTransaction.subject}
-            </div>
-            <div>
-              <label>
-                <strong>Type:</strong>
-              </label>{' '}
-              {currentTransaction.type}
-            </div>
-            <div>
-              <label>
-                <strong>Value:</strong>
-              </label>{' '}
-              {currentTransaction.value}
-            </div>
-
-            <Link
-              to={'/api/transaction/' + currentTransaction._id}
-              className="badge badge-warning"
-            >
-              Edit
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>Please select a Transaction.</p>
-          </div>
-        )}
-      </div>
-    </div>
+    </Grid>
   );
 };
 

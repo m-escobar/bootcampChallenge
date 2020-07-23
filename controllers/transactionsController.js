@@ -52,7 +52,8 @@ const findOne = async (req, res) => {
 };
 
 const findAll = async (req, res) => { 
-  const request = req.body['period'];
+  const request = req.params['period'];
+  const search = req.query['search'] || null;
 
   if (!request) {
     return res.status(400).send({
@@ -61,16 +62,30 @@ const findAll = async (req, res) => {
   }
 
   try {
-    const all_transactions = await transactionModel.find({ yearMonth: request });
-    all_transactions;
+    const allTransactions = search === null ? await transactionModel.find({ yearMonth: request }).sort( { day: 1 })
+                                            : await transactionModel.find({ yearMonth: request, description: {'$regex': search, '$options': 'i'}}).sort( { day: 1 });
 
-    res.send(all_transactions);
-    logger.info('GET /transaction');
+    res.send(allTransactions);
+    logger.info('GET /transaction/all/:period');
   } catch (error) {
     res
       .status(500)
       .send({ message: error.message || 'Error listing documents' });
-    logger.error(`GET /transaction - ${JSON.stringify(error.message)}`);
+    logger.error(`GET /transaction/all/:period - ${JSON.stringify(error.message)}`);
+  }
+};
+
+const findPeriods = async (_, res) => { 
+  try {
+    const allData = await transactionModel.distinct('yearMonth');
+
+    res.send(allData);
+    logger.info('GET /transaction/periods');
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Error listing documents' });
+    logger.error(`GET /transaction/periods - ${JSON.stringify(error.message)}`);
   }
 };
 
@@ -131,4 +146,4 @@ const remove = async (req, res) => {
   }
 };
 
-module.exports = { create, findAll, findOne, update, remove };
+module.exports = { create, findAll, findOne, update, remove, findPeriods };
