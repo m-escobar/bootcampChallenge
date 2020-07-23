@@ -99,14 +99,14 @@ const TransactionList = () => {
 
   return (    
     <Grid>
+      <DateSelector period={currentPeriod} periodsArray={allPeriods} onPeriodUpdate={updatePeriod} />
       <Summary info={info} OnInfoUpdate={handleInfoUpdate}  />
-      <SearchBox period={currentPeriod} OnSearchUpdate={handleSearchChange} />
       <Row >  
         <Col size={1}>
           <NewButton />
         </Col>
         <Col size={7}>
-          <DateSelector period={currentPeriod} periodsArray={allPeriods} onPeriodUpdate={updatePeriod} />
+          <SearchBox period={currentPeriod} OnSearchUpdate={handleSearchChange} />    
         </Col>
       </Row>
       <div className="col-md-6">
